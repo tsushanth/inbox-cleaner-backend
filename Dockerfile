@@ -1,13 +1,26 @@
-# Dockerfile with zero npm dependencies
+# Dockerfile with minimal dependencies
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package.json (no dependencies to install)
-COPY package.json ./
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
 
 # Copy source code
 COPY server.js ./
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Change ownership
+RUN chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
 
 # Expose port
 EXPOSE 8080
@@ -16,5 +29,5 @@ EXPOSE 8080
 ENV NODE_ENV=production
 ENV PORT=8080
 
-# Start the app (no npm install needed!)
+# Start the app
 CMD ["node", "server.js"]
