@@ -20,6 +20,7 @@
   "homepage": "https://github.com/tsushanth/inbox-cleaner-backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.1",
     "nodemailer": "^7.0.5",
